@@ -1,0 +1,50 @@
+name: HTTP
+
+on:
+  pull_request:
+    paths:
+      - src/libs/core/**
+      - src/libs/http/**
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Test & coverage
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.X]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+      - run: yarn --frozen-lockfile && yarn build
+
+      - name: Run branch coverage
+        run: cd src/libs/http && yarn ci:unit
+
+  integration:
+    name: Integration
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.X]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+      - run: yarn --frozen-lockfile && yarn build
+
+      - name: Run integration tests
+        run: cd src/libs/http && yarn test:int

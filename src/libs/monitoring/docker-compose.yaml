@@ -1,0 +1,48 @@
+services:
+  loki:
+    image: grafana/loki:2.9.4
+    ports:
+      - 3100:3100
+    volumes:
+      - ./docker-data/loki:/data
+      - ./config/loki/config.yaml:/etc/loki/local-config.yaml:ro
+    command: -config.file=/etc/loki/local-config.yaml
+    healthcheck:
+      test: wget http://localhost:3100/ready || exit 1
+      interval: 1s
+      timeout: 10s
+      retries: 20
+      start_period: 3s
+
+  grafana:
+    image: grafana/grafana:10.3.3
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
+    healthcheck:
+      test: wget http://localhost:3000/api/health || exit 1
+      interval: 1s
+      timeout: 10s
+      retries: 20
+      start_period: 3s
+    depends_on:
+      - loki
+    volumes:
+      - ./docker-data/grafana:/var/lib/grafana
+      - ./config/grafana/:/etc/grafana/provisioning/
+
+  test:
+    build:
+      context: ../../..
+      dockerfile: src/libs/monitoring/Dockerfile
+    depends_on:
+      - loki
+      - grafana
+    ports:
+      - 8080:8080
+    command: "yarn jest --group=integration"
+    environment:
+      - LOKI_URL=http://loki:3100
+    volumes:
+      - ../../..:/app

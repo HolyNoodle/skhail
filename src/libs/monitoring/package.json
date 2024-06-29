@@ -1,0 +1,39 @@
+{
+  "name": "@skhail/monitoring",
+  "version": "1.8.3",
+  "description": "Monitoring module for @skhail/core. Allow for monitoring logs, transactions and tracing calls between services",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "config",
+    "package.json",
+    "README.md"
+  ],
+  "type": "commonjs",
+  "scripts": {
+    "ci:unit": "TZ=Europe/Paris jest --group=unit --coverage --coverageReporters lcov --coverageReporters json-summary",
+    "ci:int": "yarn jest --group=integration",
+    "test:unit": "TZ=Europe/Paris jest --group=unit --coverage",
+    "test:int:prepare": "mkdir -p docker-data/grafana && mkdir -p docker-data/loki && chown 10001:10001 docker-data/loki/ && chown 472:472 docker-data/grafana/",
+    "test:int:setup": "yarn test:int:prepare && docker compose build",
+    "test:int": "docker compose run --remove-orphans test",
+    "lint": "prettier ./src/**/* --write",
+    "build": "tsc --project tsconfig.build.json",
+    "release": "npm publish --access public"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@skhail/core": "*",
+    "node-fetch-commonjs": "^3.3.1",
+    "prom-client": "^15.1.0"
+  },
+  "devDependencies": {
+    "@skhail/config-jest": "*",
+    "@skhail/config-tsconfig": "*",
+    "@skhail/config-babel": "*",
+    "eslint-config-skhail-lint": "*",
+    "node-fetch": "^2.0.0"
+  }
+}

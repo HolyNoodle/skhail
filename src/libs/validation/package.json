@@ -1,0 +1,33 @@
+{
+  "name": "@skhail/validation",
+  "version": "1.8.3",
+  "description": "Parameter validation moddleware for @skhail/core. Uses Joi schema to validate parameters of service functions",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "type": "commonjs",
+  "scripts": {
+    "ci:unit": "jest --group=unit --coverage --coverageReporters lcov --coverageReporters json-summary",
+    "test:unit": "jest --group=unit --coverage",
+    "test:int": "jest --group=integration",
+    "lint": "prettier ./src/**/* --write",
+    "build": "tsc --project tsconfig.build.json --skipLibCheck",
+    "release": "npm publish --access public"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@skhail/core": "*",
+    "joi": "^17.9.2"
+  },
+  "devDependencies": {
+    "@skhail/config-babel": "*",
+    "@skhail/config-jest": "*",
+    "@skhail/config-tsconfig": "*",
+    "eslint-config-skhail-lint": "*"
+  }
+}

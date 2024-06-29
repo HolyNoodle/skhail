@@ -1,0 +1,605 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": false,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 4,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{app=\"$app\", env=\"$env\"} |= `Service execute`",
+          "queryType": "range",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{app=\"$app\", env=\"$env\"} |= `Service call`",
+          "hide": false,
+          "queryType": "range",
+          "refId": "B"
+        }
+      ],
+      "title": "Nodes",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "replace": true,
+            "source": "labels"
+          }
+        },
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "app": true,
+              "env": true,
+              "method": true
+            },
+            "indexByName": {
+              "app": 0,
+              "env": 1,
+              "instance": 4,
+              "method": 2,
+              "service": 3
+            },
+            "renameByName": {}
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "instance": {
+                "aggregations": ["distinctCount"],
+                "operation": "aggregate"
+              },
+              "service": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "instance (distinctCount)": "instances"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 2,
+          "refId": "A",
+          "withTransforms": true
+        }
+      ],
+      "title": "Edges",
+      "transformations": [
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "boolean",
+                "targetField": "error"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "elapsedTimeMS": {
+                "aggregations": ["mean"],
+                "operation": "aggregate"
+              },
+              "error": {
+                "aggregations": ["sum"],
+                "operation": "aggregate"
+              },
+              "method": {
+                "aggregations": ["count"],
+                "operation": "groupby"
+              },
+              "service": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "source_method": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "source_service": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "target_method": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "target_service": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "tid": {
+                "aggregations": ["count"],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "elapsedTimeMS (mean)": 6,
+              "error (sum)": 5,
+              "method": 1,
+              "service": 0,
+              "target_method": 3,
+              "target_service": 2,
+              "tid (count)": 4
+            },
+            "renameByName": {
+              "elapsedTimeMS (mean)": "timeMS",
+              "error (sum)": "errors",
+              "method": "source_method",
+              "method (count)": "hits",
+              "service": "source",
+              "target_method": "target_method",
+              "target_service": "target",
+              "tid (count)": "hits"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "tid"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 344
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 194
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 2,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "frameIndex": 2,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "tid"
+          }
+        ]
+      },
+      "pluginVersion": "9.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{app=\"$app\", env=\"$env\"} |= `Service call` |= `\"level\":\"trace\"` | json target_service=\"details.service\", target_method=\"details.method\", tid=\"details.tid\" | line_format `{{.tid}}{{.target_service}}{{.target_method}}`",
+          "queryType": "range",
+          "refId": "Calls"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{app=\"$app\", env=\"$env\"} |= `Service response received` | json target_service=\"details.service\", target_method=\"details.method\", tid=\"details.tid\" | line_format `{{.tid}}{{.target_service}}{{.target_method}}`",
+          "hide": false,
+          "queryType": "range",
+          "refId": "Result"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{app=\"$app\", env=\"$env\"} |= `Service call error` |= `\"level\":\"error\"` | json target_service=\"details.error.details.service\", target_method=\"details.error.details.method\", tid=\"details.tid\", error=\"details.error.details.error\" | line_format `{{.tid}}{{.target_service}}{{.target_method}}`",
+          "hide": false,
+          "queryType": "range",
+          "refId": "Errors"
+        }
+      ],
+      "title": "Transactions",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "format": "json",
+            "replace": false,
+            "source": "labels"
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "Line",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "elapsedTimeNS",
+            "binary": {
+              "left": "tsNs 2",
+              "operator": "-",
+              "reducer": "sum",
+              "right": "tsNs 1"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "elapsedTimeMS",
+            "binary": {
+              "left": "elapsedTimeNS",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "elapsedTimeMS": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "elapsedTimeNS": {
+                "aggregations": []
+              },
+              "error": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "method 1": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "service 1": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "target_method 1": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "target_service 1": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "target_service 3": {
+                "aggregations": []
+              },
+              "tid 1": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "tsNs 1": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 37,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "skhail-test",
+          "value": "skhail-test"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Application",
+        "multi": false,
+        "name": "app",
+        "options": [],
+        "query": {
+          "label": "app",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "test",
+          "value": "test"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Environement",
+        "multi": false,
+        "name": "env",
+        "options": [],
+        "query": {
+          "label": "env",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "hide": 0,
+        "label": "Transaciton ID",
+        "name": "transaction",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Transactions",
+  "uid": "iJTsyRoSz",
+  "version": 5,
+  "weekStart": ""
+}

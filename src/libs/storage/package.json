@@ -1,0 +1,40 @@
+{
+  "name": "@skhail/storage",
+  "version": "1.8.3",
+  "description": "Storage module for @skhail/core. Allow to centralize file storage for your application",
+  "main": "dist/client.js",
+  "types": "dist/client.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "type": "commonjs",
+  "scripts": {
+    "ci:unit": "jest --group=unit --coverage --coverageReporters lcov --coverageReporters json-summary",
+    "test:unit": "jest --group=unit --coverage",
+    "test:int": "jest --group=integration --runInBand",
+    "lint": "prettier ./src/**/* --write",
+    "build": "tsc --project tsconfig.build.json",
+    "release": "npm publish --access public"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/ws": "^8.5.3",
+    "web-streams-polyfill": "^3.2.1",
+    "@skhail/config-jest": "*",
+    "@skhail/config-tsconfig": "*",
+    "@skhail/config-babel": "*",
+    "eslint-config-skhail-lint": "*"
+  },
+  "dependencies": {
+    "isomorphic-ws": "^5.0.0",
+    "ws": "^8.9.0",
+    "urlpattern-polyfill": "^5.0.9",
+    "@skhail/core": "*",
+    "@skhail/http": "*",
+    "@skhail/stream": "*",
+    "@skhail/stream-isomorphic": "*"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "@skhail/amqp",
+  "version": "1.8.3",
+  "description": "AMQP module for @skhail/core. Allows to connect to rabbitmq to organize service communication",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "type": "commonjs",
+  "scripts": {
+    "ci:unit": "jest --group=unit --coverage --coverageReporters lcov --coverageReporters json-summary",
+    "test:unit": "jest --group=unit --coverage",
+    "test:int:setup": "docker compose build",
+    "test:int": "docker compose up -d && jest --group=integration",
+    "test:int:debug": "docker compose run test node --inspect-brk=0.0.0.0:9229 ./node_modules/jest/bin/jest.js --group=integration",
+    "lint": "prettier ./src/**/* --write",
+    "load": "nodemon --exec \"node --inspect-brk=0.0.0.0:9229 --require ts-node/register src/queue.load.ts\"",
+    "build": "tsc --project tsconfig.build.json",
+    "release": "npm publish --access public"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@skhail/core": "*",
+    "amqplib": "^0.10.3",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.10.0",
+    "@skhail/config-jest": "*",
+    "@skhail/config-tsconfig": "*",
+    "@skhail/config-babel": "*",
+    "eslint-config-skhail-lint": "*"
+  }
+}

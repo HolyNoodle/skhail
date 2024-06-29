@@ -1,0 +1,27 @@
+{
+  "name": "@skhail/stream-isomorphic",
+  "version": "1.8.3",
+  "description": "",
+  "main": "./dist/index.node.js",
+  "browser": "./dist/index.browser.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "node": "./dist/index.node.js",
+    "default": "./dist/index.browser.js"
+  },
+  "scripts": {
+    "ci:unit": "jest --group=unit --coverage --coverageReporters lcov --coverageReporters json-summary",
+    "test:unit": "jest --group=unit --coverage",
+    "test:int": "jest --group=integration",
+    "lint": "prettier ./src/**/* --write",
+    "build": "tsc --project tsconfig.build.json && cp ./src/index.d.ts ./dist/index.d.ts",
+    "release": "npm publish --access public"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@skhail/config-tsconfig": "*",
+    "eslint-config-skhail-lint": "*"
+  }
+}

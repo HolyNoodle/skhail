@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`handleServiceCall handleServiceCall Should stop calling middle when one fails 1`] = `
+{
+  "details": {
+    "error": {
+      "message": "Error test",
+    },
+    "method": "internalTest",
+    "service": "Test",
+    "tid": undefined,
+  },
+  "message": "An error occured while processing middlewares",
+  "name": "unexpected",
+}
+`;

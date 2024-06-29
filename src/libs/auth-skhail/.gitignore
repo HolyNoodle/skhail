@@ -1,0 +1,8 @@
+node_modules
+coverage
+tmp
+
+prisma/dev.db
+prisma/dev.db-journal
+
+app-data/

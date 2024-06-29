@@ -1,0 +1,1317 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 7,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 4,
+          "refId": "A",
+          "withTransforms": false
+        }
+      ],
+      "title": "Error ratio",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "Time",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "ValuedSuccess",
+            "binary": {
+              "left": "Success",
+              "reducer": "sum",
+              "right": "0"
+            },
+            "mode": "reduceRow",
+            "reduce": {
+              "include": ["Success"],
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "ValuedError",
+            "binary": {
+              "left": "Errors",
+              "reducer": "sum",
+              "right": "0"
+            },
+            "mode": "reduceRow",
+            "reduce": {
+              "include": ["Errors"],
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Total",
+            "binary": {
+              "left": "ValuedSuccess",
+              "reducer": "sum",
+              "right": "ValuedError"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": false,
+            "mode": "reduceFields",
+            "reducers": ["sum"]
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Ratio",
+            "binary": {
+              "left": "ValuedError",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "Total"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Percentage",
+            "binary": {
+              "left": "Ratio",
+              "operator": "*",
+              "reducer": "sum",
+              "right": "100"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Errors": true,
+              "Ratio": true,
+              "Success": true,
+              "Total": true,
+              "ValuedError": true,
+              "ValuedSuccess": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "reqps",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 17,
+        "x": 7,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "9.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "builder",
+          "expr": "sum(count_over_time({service=\"$service\", app=\"$app\", env=\"$environment\"} |= `\"level\":\"trace\"` |= `Send service response` [$__interval]))",
+          "legendFormat": "Success",
+          "queryType": "range",
+          "refId": "Success",
+          "resolution": 1
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "builder",
+          "expr": "sum(count_over_time({service=\"$service\", app=\"$app\", env=\"$environment\"} |= `Service call error` [$__interval]))",
+          "hide": false,
+          "legendFormat": "Errors",
+          "queryType": "range",
+          "refId": "Errors"
+        }
+      ],
+      "title": "Success/Errors",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "Time",
+            "mode": "outer"
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 5
+      },
+      "id": 12,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "builder",
+          "expr": "{app=\"$app\", env=\"$environment\", service=\"$service\"}",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Number of instances",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "source": "labels"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "id": {
+                "aggregations": []
+              },
+              "instance": {
+                "aggregations": ["distinctCount"],
+                "operation": "aggregate"
+              },
+              "service": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "service": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "instance (distinctCount)": "Instance count"
+            }
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "yellow",
+            "mode": "thresholds",
+            "seriesBy": "last"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 200,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "area"
+            }
+          },
+          "decimals": 0,
+          "fieldMinMax": false,
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 200
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          },
+          "unit": "ms",
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": ["ElapsedTime"],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 17,
+        "x": 7,
+        "y": 5
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "builder",
+          "expr": "{service=\"$service\", app=\"$app\", env=\"$environment\"} |= `\"level\":\"trace\"` | json message, tid | message = `Service execute`",
+          "hide": false,
+          "queryType": "range",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "builder",
+          "expr": "{app=\"$app\", service=\"$service\", env=\"$environment\"} |= `\"level\":\"trace\"` | json message, tid | message = `Send service response`",
+          "hide": false,
+          "queryType": "range",
+          "refId": "B"
+        }
+      ],
+      "title": "Response time",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "replace": false,
+            "source": "labels"
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "tid",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "ElapsedTime",
+            "binary": {
+              "left": "Time 2",
+              "operator": "-",
+              "reducer": "sum",
+              "right": "Time 1"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ElapsedTime": false,
+              "Line 1": true,
+              "Line 2": true,
+              "Time 1": true,
+              "Time 2": false,
+              "app 1": true,
+              "app 2": true,
+              "env 1": true,
+              "env 2": true,
+              "id 1": true,
+              "id 2": true,
+              "instance 1": true,
+              "instance 2": true,
+              "labels 1": true,
+              "labels 2": true,
+              "level 1": true,
+              "level 2": true,
+              "message 1": true,
+              "message 2": true,
+              "method 1": true,
+              "method 2": true,
+              "service 1": true,
+              "service 2": true,
+              "tid": true,
+              "tsNs 1": true,
+              "tsNs 2": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 11,
+        "x": 0,
+        "y": 10
+      },
+      "id": 11,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{app=\"$app\", env=\"$environment\", service=\"$service\"} |= `\"level\":\"trace\"` |= `Service execute` | json target_service=\"details.service\", target_method=\"details.method\", tid",
+          "queryType": "range",
+          "refId": "Dependencies"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{app=\"$app\", env=\"$environment\"} |= `\"level\":\"trace\"` |= `Send service response` | json target_service=\"details.service\", target_method=\"details.method\", tid",
+          "hide": false,
+          "queryType": "range",
+          "refId": "Response"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{app=\"$app\", env=\"$environment\"} |= `\"level\":\"error\"` |= `Service call error` | json target_service=\"details.error.details.service\", target_method=\"details.error.details.method\", tid=\"details.tid\"",
+          "hide": true,
+          "queryType": "range",
+          "refId": "Errors"
+        }
+      ],
+      "title": "Performances",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "source": "labels"
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "tid",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "elapsedTime",
+            "binary": {
+              "left": "Time 2",
+              "operator": "-",
+              "right": "Time 1"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "Line 1"
+              }
+            ],
+            "match": "all",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "boolean",
+                "targetField": "Line 2"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Line 2": {
+                "aggregations": ["sum"]
+              },
+              "elapsedTime": {
+                "aggregations": ["mean"],
+                "operation": "aggregate"
+              },
+              "method 1": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "service 1": {
+                "aggregations": []
+              },
+              "target_method 1": {
+                "aggregations": []
+              },
+              "target_service 1": {
+                "aggregations": []
+              },
+              "tsNs 2": {
+                "aggregations": ["count"],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "method": 0,
+              "tsNs 2 (count)": 1
+            },
+            "renameByName": {
+              "Line 2 (sum)": "Errors",
+              "elapsedTime (mean)": "Time (ms)",
+              "method": "Method",
+              "target_method": "Method",
+              "target_service": "Service",
+              "tsNs 2 (count)": "Hits"
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Time (ms)"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "details"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "json-view"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "level"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 61
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 157
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "message"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 336
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 13,
+        "x": 11,
+        "y": 10
+      },
+      "id": 2,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "builder",
+          "expr": "{app=\"$app\", service=\"$service\", env=\"$environment\"} != `\"level\":\"trace\"` | json level, message, tid=\"details.tid\", details=\"details\"",
+          "queryType": "range",
+          "refId": "Logs"
+        }
+      ],
+      "title": "Logs",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "replace": false,
+            "source": "labels"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Line": true,
+              "app": true,
+              "env": true,
+              "id": true,
+              "instance": true,
+              "labels": true,
+              "method": true,
+              "service": true,
+              "tid": true,
+              "tsNs": true
+            },
+            "indexByName": {
+              "Line": 11,
+              "Time": 0,
+              "app": 1,
+              "details": 8,
+              "env": 2,
+              "id": 13,
+              "instance": 9,
+              "labels": 10,
+              "level": 3,
+              "message": 6,
+              "method": 4,
+              "service": 7,
+              "tid": 5,
+              "tsNs": 12
+            },
+            "renameByName": {}
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Time"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 11,
+        "x": 0,
+        "y": 17
+      },
+      "id": 10,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{app=\"$app\", env=\"$environment\", service=\"$service\"} |= `\"level\":\"trace\"` |= `Service call` | json target_service=\"details.service\", target_method=\"details.method\", tid=\"details.tid\"",
+          "queryType": "range",
+          "refId": "Dependencies"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{app=\"$app\", env=\"$environment\"} |= `\"level\":\"trace\"` |= `Service response received` | json target_service=\"details.service\", target_method=\"details.method\", tid=\"details.tid\"",
+          "hide": false,
+          "queryType": "range",
+          "refId": "Response"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{app=\"$app\", env=\"$environment\"} |= `\"level\":\"error\"` |= `Service call error` | json target_service=\"details.error.details.service\", target_method=\"details.error.details.method\", tid=\"details.tid\"",
+          "hide": false,
+          "queryType": "range",
+          "refId": "Errors"
+        }
+      ],
+      "title": "Dependencies",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "source": "labels"
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "tid",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "Line 1"
+              }
+            ],
+            "match": "all",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "boolean",
+                "targetField": "Line 2"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Line 2": {
+                "aggregations": ["sum"],
+                "operation": "aggregate"
+              },
+              "method 1": {
+                "aggregations": []
+              },
+              "service 1": {
+                "aggregations": []
+              },
+              "target_method 1": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "target_service 1": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "tsNs 2": {
+                "aggregations": ["count"],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "Line 2 (sum)": 2,
+              "target_method": 1,
+              "target_service": 0,
+              "tsNs 2 (count)": 3
+            },
+            "renameByName": {
+              "Line 2 (sum)": "Errors",
+              "target_method": "Method",
+              "target_service": "Service",
+              "tsNs 2 (count)": "Hits"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "demogear",
+          "value": "demogear"
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "P8E80F9AEF21F6940"
+        },
+        "definition": "",
+        "description": "Select application(s) of the application you want to filter logs onto",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Application",
+        "multi": false,
+        "name": "app",
+        "options": [],
+        "query": {
+          "label": "app",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "development",
+          "value": "development"
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "P8E80F9AEF21F6940"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": {
+          "label": "env",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "Poll",
+          "value": "Poll"
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "P8E80F9AEF21F6940"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Service",
+        "multi": false,
+        "name": "service",
+        "options": [],
+        "query": {
+          "label": "service",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Service",
+  "uid": "service-details",
+  "version": 5,
+  "weekStart": "Monday"
+}

@@ -1,0 +1,33 @@
+{
+  "name": "@skhail/stream",
+  "version": "1.8.3",
+  "description": "Stream library for @skhail/core",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "type": "commonjs",
+  "scripts": {
+    "ci:unit": "jest --group=unit --coverage --coverageReporters lcov --coverageReporters json-summary",
+    "test:unit": "jest --group=unit --coverage",
+    "test:int": "jest --group=integration",
+    "lint": "prettier ./src/**/* --write",
+    "build": "tsc --project tsconfig.build.json",
+    "release": "npm publish --access public"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@skhail/config-tsconfig": "*",
+    "@skhail/config-babel": "*",
+    "@skhail/stream-isomorphic": "*",
+    "eslint-config-skhail-lint": "*"
+  },
+  "dependencies": {
+    "isomorphic-ws": "^5.0.0",
+    "ws": "^8.9.0"
+  }
+}

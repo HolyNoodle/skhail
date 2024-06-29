@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@skhail/config-tsconfig",
+  "compilerOptions": {
+    "lib": ["esnext", "DOM"],
+    "outDir": "dist"
+  },
+  "include": ["src"]
+}

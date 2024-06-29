@@ -1,0 +1,43 @@
+{
+  "name": "@skhail/auth",
+  "version": "1.8.3",
+  "description": "Authentication module for @skhail/core",
+  "main": "dist/client.js",
+  "types": "dist/client.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "type": "commonjs",
+  "scripts": {
+    "ci:unit": "jest --group=unit --coverage --coverageReporters lcov --coverageReporters json-summary",
+    "test:unit": "jest --group=unit --coverage",
+    "test:int": "jest --group=integration",
+    "lint": "prettier ./src/**/* --write",
+    "build": "tsc --project tsconfig.build.json",
+    "release": "npm publish --access public"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@skhail/config-jest": "*",
+    "@skhail/config-tsconfig": "*",
+    "@skhail/config-babel": "*",
+    "eslint-config-skhail-lint": "*",
+    "jest-mock-extended": "^3.0.1",
+    "@types/node-jose": "^1.1.10",
+    "@types/node-forge": "^1.3.1"
+  },
+  "dependencies": {
+    "node-forge": "^1.3.1",
+    "node-jose": "^2.1.1",
+    "@skhail/core": "*"
+  },
+  "mikro-orm": {
+    "useTsNode": true,
+    "configPaths": [
+      "./src/integration.db.config.ts"
+    ]
+  }
+}

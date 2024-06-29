@@ -1,0 +1,64 @@
+name: Main build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      loki:
+        image: grafana/loki:2.8.3
+        ports:
+          - 3100:3100
+
+    strategy:
+      matrix:
+        node-version: [20.X]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+      - run: yarn
+
+      - name: Create Release Pull Request
+        uses: changesets/action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Jest Coverage Comment
+      #   id: coverageComment
+      #   if: success() || failure()
+      #   uses: MishaKav/jest-coverage-comment@main
+      #   with:
+      #     hide-comment: true
+      #     multiple-files: |
+      #       skhail-core, ./src/libs/core/coverage/coverage-summary.json
+      #       skhail-http, ./src/libs/http/coverage/coverage-summary.json
+      #       skhail-amqp, ./src/libs/amqp/coverage/coverage-summary.json
+      #       skhail-auth, ./src/libs/auth/coverage/coverage-summary.json
+      #       skhail-monitoring, ./src/libs/monitoring/coverage/coverage-summary.json
+      #       skhail-storage, ./src/libs/storage/coverage/coverage-summary.json
+      #       skhail-validation, ./src/libs/validation/coverage/coverage-summary.json
+      #       skhail-transaction, ./src/libs/transaction/coverage/coverage-summary.json
+      #       skhail-stream, ./src/libs/stream/coverage/coverage-summary.json
+      #       skhail-stream-isomorphic, ./src/libs/stream-isomorphic/coverage/coverage-summary.json
+
+      # - name: Create the badge
+      #   if: github.ref == 'refs/heads/main' && (success() || failure())
+      #   uses: schneegans/dynamic-badges-action@v1.6.0
+      #   with:
+      #     auth: ${{ secrets.GITHUB_TOKEN }}
+      #     gistID: 143826c0dbb9a3655b54e9f3597b3802
+      #     filename: skhail-badge.json
+      #     label: Coverage
+      #     message: ${{ steps.coverageComment.outputs.coverage }}%
+      #     color: ${{ steps.coverageComment.outputs.color }}
+      #     namedLogo: javascript

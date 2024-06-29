@@ -1,0 +1,58 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "db:init": {
+      "cache": false
+    },
+    "db:generate": {},
+    "db:push": {},
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+    },
+    "release": {
+      "dependsOn": ["^build", "^release"],
+      "inputs": ["dist/**", "package.json", "README.md"]
+    },
+    "test:unit": {
+      "dependsOn": [],
+      "outputs": ["coverage/**"],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+    },
+    "ci:unit": {
+      "dependsOn": ["build"],
+      "outputs": ["coverage/**"],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+    },
+    "docker:build": {
+      "dependsOn": ["^docker:build"]
+    },
+    "test:int:setup": {
+      "dependsOn": ["^test:int:setup"],
+      "outputs": [],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+    },
+    "test:int": {
+      "dependsOn": ["build", "test:int:setup"],
+      "outputs": [],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+    },
+    "lint": {
+      "outputs": [],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+    },
+    "deploy": {
+      "dependsOn": ["build", "test", "lint"],
+      "outputs": []
+    },
+    "dev": {
+      "dependsOn": [],
+      "outputs": []
+    },
+    "soc:dev": {
+      "dependsOn": ["^db:generate", "^db:push"],
+      "outputs": []
+    }
+  }
+}

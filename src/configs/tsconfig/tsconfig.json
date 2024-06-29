@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "lib": ["ES6"],
+    "module": "ES6",
+    "target": "ES6",
+    "noEmit": false,
+    "strict": true,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true
+  },
+  "exclude": ["node_modules"]
+}

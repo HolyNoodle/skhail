@@ -1,0 +1,41 @@
+{
+  "name": "@skhail/core",
+  "version": "1.8.3",
+  "description": "Core module of the Skhail library. It contains the core logic of managing services",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HolyNoodle/skhail.git"
+  },
+  "scripts": {
+    "ci:unit": "jest --group=unit --coverage --coverageReporters lcov --coverageReporters json-summary",
+    "test:unit": "jest --group=unit --coverage",
+    "test:int": "jest --group=integration",
+    "lint": "prettier ./src/**/* --write",
+    "build": "tsc --project tsconfig.build.json --skipLibCheck",
+    "release": "npm publish --access public"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@skhail/config-jest": "*",
+    "@skhail/config-tsconfig": "*",
+    "@skhail/config-babel": "*",
+    "eslint-config-skhail-lint": "*"
+  }
+}

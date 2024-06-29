@@ -1,0 +1,5 @@
+{
+  "name": "@skhail/config-tsconfig",
+  "version": "1.1.4",
+  "main": "tsconfig.json"
+}

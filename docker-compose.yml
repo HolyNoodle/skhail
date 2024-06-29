@@ -1,0 +1,116 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: "rabbitmq"
+    networks:
+      - default
+    ports:
+      - 5672:5672
+      - 15672:15672
+    command:
+      [
+        "bash",
+        "-c",
+        "chmod 400 /var/lib/rabbitmq/.erlang.cookie; rabbitmq-server",
+      ]
+    volumes:
+      - ./docker-data/rabbitmq/data/:/var/lib/rabbitmq/
+      - ./docker-data/rabbitmq/log/:/var/log/rabbitmq
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "5672"]
+      interval: 5s
+      timeout: 15s
+      retries: 10
+
+  main:
+    build:
+      context: .
+      dockerfile: "./images/Dockerfile.todolist.server"
+    image: todolist
+    container_name: "main"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - default
+    environment:
+      - SKHAIL_SERVICES=AuthenticationService,ClientService
+      - SKHAIL_INSTANCE=main
+    volumes:
+      - ./docker-data/server/:/data/:rw
+
+  api:
+    image: todolist
+    container_name: "api"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - default
+    ports:
+      - 5005:5000
+    environment:
+      - SKHAIL_SERVICES=HTTPAPIService
+      - SKHAIL_INSTANCE=api
+    volumes:
+      - ./docker-data/server/:/data/:rw
+
+  monitoring:
+    image: todolist
+    container_name: "monitoring"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - default
+    environment:
+      - SKHAIL_SERVICES=MonitoringService
+      - SKHAIL_INSTANCE=monitoring
+    volumes:
+      - ./docker-data/server/:/data/:rw
+
+  todolist:
+    image: todolist
+    container_name: "todolist"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - default
+    environment:
+      - SKHAIL_SERVICES=TodoListService
+      - SKHAIL_INSTANCE=todo-1
+    volumes:
+      - ./docker-data/server/:/data/:rw
+
+  todolist2:
+    image: todolist
+    container_name: "todolist2"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - default
+    environment:
+      - SKHAIL_SERVICES=TodoListService
+      - SKHAIL_INSTANCE=todo-2
+    volumes:
+      - ./docker-data/server/:/data/:rw
+
+  load-runner:
+    image: todolist
+    container_name: "load-runner"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - default
+    environment:
+      - SKHAIL_SERVICES=LoadTestingService
+      - SKHAIL_INSTANCE=load-runner
+    volumes:
+      - ./docker-data/server/:/data/:rw
+
+networks:
+  default:
+    driver: bridge

@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "prisma.prisma",
+    "yzhang.markdown-all-in-one",
+    "firsttris.vscode-jest-runner"
+  ]
+}

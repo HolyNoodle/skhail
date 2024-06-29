@@ -1,0 +1,10 @@
+.turbo
+out
+dist
+node_modules
+coverage
+docker-data
+
+tmp/
+
+.env

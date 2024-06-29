@@ -1,0 +1,44 @@
+name: Pull request
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.X]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+
+      - uses: holynoodle/monorepo-coverage-diff@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: main
+          projects: |
+            amqp:src/libs/amqp
+            auth:src/libs/auth
+            auth-skhail:src/libs/auth-skhail
+            auth-google:src/libs/auth-google
+            core:src/libs/core
+            http:src/libs/http
+            monitoring:src/libs/monitoring
+            storage:src/libs/storage
+            stream:src/libs/stream
+            validation:src/libs/validation
+            transaction:src/libs/transaction
+            logger:src/libs/logger
+          commands: |
+            yarn --frozen-lockfile
+            yarn build
+            yarn ci:unit

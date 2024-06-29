@@ -1,0 +1,19 @@
+services:
+  skhail-test-rmq:
+    image: rabbitmq:3-management-alpine
+    container_name: "rabbitmq"
+    ports:
+      - 5673:5672
+    expose:
+      - 5673
+    command:
+      [
+        "bash",
+        "-c",
+        "chmod 400 /var/lib/rabbitmq/.erlang.cookie; rabbitmq-server",
+      ]
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "5672"]
+      interval: 5s
+      timeout: 15s
+      retries: 10

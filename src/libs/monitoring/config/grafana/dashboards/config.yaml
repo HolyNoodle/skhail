@@ -1,0 +1,36 @@
+apiVersion: 1
+
+providers:
+  - name: "Home"
+    orgId: 1
+    folder: "Architecture"
+    folderUid: "skhail"
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 60
+    allowUiUpdates: false
+    options:
+      path: /etc/grafana/provisioning/dashboards/home.json
+      foldersFromFilesStructure: false
+  - name: "NodeJS"
+    orgId: 1
+    folder: "Architecture"
+    folderUid: "skhail"
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 15
+    allowUiUpdates: false
+    options:
+      path: /etc/grafana/provisioning/dashboards/nodejs.json
+      foldersFromFilesStructure: false
+  - name: "Service"
+    orgId: 1
+    folder: "Architecture"
+    folderUid: "skhail"
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 60
+    allowUiUpdates: false
+    options:
+      path: /etc/grafana/provisioning/dashboards/service.json
+      foldersFromFilesStructure: false
